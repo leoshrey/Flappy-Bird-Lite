@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Text, ImageBackground, Dimensions, TouchableWithoutFeedback } from 'react-native';
+import { StyleSheet, Text, ImageBackground, View, Dimensions, TouchableWithoutFeedback } from 'react-native';
 import Bird from './components/Bird'
 import Obstacle from './components/Obstacle'
 
@@ -107,7 +107,8 @@ export default function App() {
   
   return (
     <TouchableWithoutFeedback onPress={jump}>
-      <ImageBackground style={styles.container} source={require('./assets/blahaj_background.png')}>
+      {/* <ImageBackground style={styles.container} source={require('./assets/blahaj_background.png')}> */}
+      <View style={styles.container}>
         {isGameOver && <Text style={{color: "purple"}}>{score}</Text>}
         <Bird 
           birdBottom = {birdBottom} 
@@ -122,7 +123,8 @@ export default function App() {
           obstacleLeft = {obstacleALeft}
         />
         {/* Make a second Obstacle */}
-      </ImageBackground>
+      </View>
+      {/* </ImageBackground> */}
     </TouchableWithoutFeedback>
   )
 }
