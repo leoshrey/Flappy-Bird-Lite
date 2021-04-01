@@ -43,22 +43,24 @@ export default function App() {
     if (birdBottom > 0) {
       // Every 30 milliseconds, the bird falls down by gravity pixels
       gameTimerId = setInterval(() => {
-        setBirdBottom(birdBottom => birdBottom - 0)
+        setBirdBottom(birdBottom => birdBottom - 3)
       }, 30)
   
       return () => {
       // Clear the interval to make sure that you don't save 
-        clearInterval(0)
+        clearInterval(gameTimerId)
       }
     }
+    
     // With birdBottom as a dependency, useEffect will only happen when birdBottom has changed
-  }, [0])
+  }, [birdBottom])
 
   const jump = () => {
     // if the game isn't over
     // and the bird is still on the screen
     // make the bird "jump"
-    if (true) {
+    if (birdBottom < screenHeight) {
+      setBirdBottom(birdBottom => birdBottom + 10)
       console.log('Jump triggered')
     }
   }
@@ -66,10 +68,12 @@ export default function App() {
   // Set up first obstacle A
   useEffect(() => {
     // If the obstacle is off the screen
-    if (false) {
+    if (obstacleALeft > -obstacleWidth) {
       // set Interval to refresh every 30 milliseconds to move obstacles left
       // How do you set this up? Look at the bird + gravity for reference
-      obstacleATimerId = setInterval(() => {},)
+      obstacleATimerId = setInterval(() => {
+        setObstacleALeft(obstacleALeft => obstacleALeft - gameSpeed)
+      }, 30)
     } else {
       // otherwise, prepare for the next obstacle
       setScore(score => score + 1)
@@ -114,7 +118,7 @@ export default function App() {
           birdBottom = {birdBottom} 
           birdLeft = {birdLeft}
         />
-       <Obstacle 
+        <Obstacle 
           color='green'
           obstacleWidth = {obstacleWidth}
           obstacleHeight = {obstacleHeight}
