@@ -59,7 +59,7 @@ export default function App() {
     // if the game isn't over
     // and the bird is still on the screen
     // make the bird "jump"
-    if (birdBottom < screenHeight) {
+    if (!isGameOver && birdBottom < screenHeight) {
       setBirdBottom(birdBottom => birdBottom + 20)
       console.log('Jump triggered')
     }
@@ -111,6 +111,9 @@ export default function App() {
 
   const gameOver = () => {
     // clear all the TimerIds and make it so IsGameOver is true
+    clearInterval(gameTimerId)
+    clearInterval(obstacleATimerId)
+    setIsGameOver(true)
   }
   
   return (
