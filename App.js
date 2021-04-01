@@ -60,7 +60,7 @@ export default function App() {
     // and the bird is still on the screen
     // make the bird "jump"
     if (birdBottom < screenHeight) {
-      setBirdBottom(birdBottom => birdBottom + 10)
+      setBirdBottom(birdBottom => birdBottom + 20)
       console.log('Jump triggered')
     }
   }
@@ -93,11 +93,12 @@ export default function App() {
     // Think of colliding as checking to see if 1) the pipe is in the center and 2) the bird is in either the top or bottom of the screen
 
     // What does it mean for the Obstacle to be at the center? Account for the whole width of the pipe
-    const obstacleAAtCenter = false
+    const obstacleAAtCenter = obstacleALeft > screenWidth/2 - obstacleWidth/2 && obstacleALeft < screenWidth/2 + obstacleWidth/2
 
     // What about whether or not the "bird" is on the top or bottom pipe?
-    const birdRunIntoTopA = false
-    const birdRunIntoBottomA = false
+    const birdRunIntoTopA = birdBottom < (obstacleAGapStart + obstacleHeight + obstacleWidth/2)
+    
+    const birdRunIntoBottomA = birdBottom > (obstacleAGapStart + obstacleHeight + gap - obstacleWidth/2)
     
 
     const collisionA = (birdRunIntoTopA || birdRunIntoBottomA) && obstacleAAtCenter
