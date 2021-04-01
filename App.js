@@ -67,25 +67,43 @@ export default function App() {
 
   // Set up first obstacle A
   useEffect(() => {
-    // If the obstacle is off the screen
-    if (obstacleALeft > -obstacleWidth) {
-      // set Interval to refresh every 30 milliseconds to move obstacles left
-      // How do you set this up? Look at the bird + gravity for reference
-      obstacleATimerId = setInterval(() => {
-        setObstacleALeft(obstacleALeft => obstacleALeft - gameSpeed)
-      }, 30)
-      return () => {
-        clearInterval(obstacleATimerId)
+    if (!isGameOver) {
+      // If the obstacle is off the screen
+      if (obstacleALeft > -obstacleWidth) {
+        // set Interval to refresh every 30 milliseconds to move obstacles left
+        // How do you set this up? Look at the bird + gravity for reference
+        obstacleATimerId = setInterval(() => {
+          setObstacleALeft(obstacleALeft => obstacleALeft - gameSpeed)
+        }, 30)
+        return () => {
+          clearInterval(obstacleATimerId)
+        }
+      } else {
+        // otherwise, prepare for the next obstacle
+        setScore(score => score + 1)
+        setObstacleALeft(screenWidth)
+        setObstacleAGapStart(-Math.random() * 150)
       }
-    } else {
-      // otherwise, prepare for the next obstacle
-      setScore(score => score + 1)
-      setObstacleALeft(screenWidth)
-      setObstacleAGapStart(-Math.random() * 150)
     }
   }, [obstacleALeft])
 
   // Set up second obstacle B, similar to A, except use the B variables
+  useEffect(() => {
+    // If the obstacle is off the screen
+    if (obstacleBLeft > -obstacleWidth) {
+      obstacleBTimerId = setInterval(() => {
+        setObstacleBLeft(obstacleBLeft => obstacleBLeft - gameSpeed)
+      }, 30)
+      return () => {
+        clearInterval(obstacleBTimerId)
+      }
+    } else {
+      // otherwise, prepare for the next obstacle
+      setScore(score => score + 1)
+      setObstacleBLeft(screenWidth)
+      setObstacleBGapStart(-Math.random() * 150)
+    }
+  }, [obstacleBLeft])
 
   // Check for collisions
   useEffect(() => {
@@ -99,11 +117,19 @@ export default function App() {
     const birdRunIntoTopA = birdBottom < (obstacleAGapStart + obstacleHeight + obstacleWidth/2)
     
     const birdRunIntoBottomA = birdBottom > (obstacleAGapStart + obstacleHeight + gap - obstacleWidth/2)
-    
 
     const collisionA = (birdRunIntoTopA || birdRunIntoBottomA) && obstacleAAtCenter
 
-    if (collisionA) {
+    const obstacleBAtCenter = obstacleBLeft > screenWidth/2 - obstacleWidth/2 && obstacleBLeft < screenWidth/2 + obstacleWidth/2
+
+    // What about whether or not the "bird" is on the top or bottom pipe?
+    const birdRunIntoTopB = birdBottom < (obstacleBGapStart + obstacleHeight + obstacleWidth/2)
+    
+    const birdRunIntoBottomB = birdBottom > (obstacleBGapStart + obstacleHeight + gap - obstacleWidth/2)
+
+    const collisionB = (birdRunIntoTopB || birdRunIntoBottomB) && obstacleBAtCenter
+
+    if (collisionA || collisionB) {
       console.log("Game Over - Score of " + score)
       gameOver();
     }
@@ -113,6 +139,7 @@ export default function App() {
     // clear all the TimerIds and make it so IsGameOver is true
     clearInterval(gameTimerId)
     clearInterval(obstacleATimerId)
+    clearInterval(obstacleBTimerId)
     setIsGameOver(true)
   }
   
@@ -120,20 +147,26 @@ export default function App() {
     <TouchableWithoutFeedback onPress={jump}>
       {/* <ImageBackground style={styles.container} source={require('./assets/blahaj_background.png')}> */}
       <View style={styles.container}>
-        {isGameOver && <Text style={{color: "purple"}}>{score}</Text>}
         <Bird 
           birdBottom = {birdBottom} 
           birdLeft = {birdLeft}
         />
         <Obstacle 
-          color='green'
+          color='white'
           obstacleWidth = {obstacleWidth}
           obstacleHeight = {obstacleHeight}
           gapLocation = {obstacleAGapStart}
           gap = {gap}
           obstacleLeft = {obstacleALeft}
         />
-        {/* Make a second Obstacle */}
+        <Obstacle 
+          color='red'
+          obstacleWidth = {obstacleWidth}
+          obstacleHeight = {obstacleHeight}
+          gapLocation = {obstacleBGapStart}
+          gap = {gap}
+          obstacleLeft = {obstacleBLeft}
+        />
       </View>
       {/* </ImageBackground> */}
     </TouchableWithoutFeedback>
@@ -144,7 +177,7 @@ const styles = StyleSheet.create({
   // overflow: hidden is for web version
   container: {
     flex: 1,
-    backgroundColor: 'blue',
+    backgroundColor: 'yellow',
     overflow: 'hidden',
   },
 })
