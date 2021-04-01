@@ -74,6 +74,9 @@ export default function App() {
       obstacleATimerId = setInterval(() => {
         setObstacleALeft(obstacleALeft => obstacleALeft - gameSpeed)
       }, 30)
+      return () => {
+        clearInterval(obstacleATimerId)
+      }
     } else {
       // otherwise, prepare for the next obstacle
       setScore(score => score + 1)
