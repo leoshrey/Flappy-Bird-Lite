@@ -1,7 +1,5 @@
 # One Button Game
-This game was built for Local Hack Day: Share 2021's livestream. This repository is the template code needed to participate with the [livestream](https://twitch.tv/mlh). If you like this content, follow [Mara on Twitch](https://twitch.com/maradrinksmilk) or find [Mara on Twitter](https://twitter.com/maradrinksmilk).
-
-This was built using [Ania Kubow's tutorial](https://youtu.be/dhpjjAxKbHE) + [Original GitHub](https://github.com/kubowania/flappy-birds-react-native) as a template and then edited to fit a workshop style.
+A fun filled Flappy bird game.
 
 ## Set Up the Environment
 It's assumed you have your own IDE ready!
