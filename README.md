@@ -13,7 +13,7 @@ It's assumed you have your own IDE ready!
 6. On the left hand side, click `Run in web browser` to get the app visible!
 
 ## Extensions
-Interested in continuing the code?
+Continuing the code
 
 **Ideas to Expand On**
 * Levels - does the game get faster? or maybe gaps get smaller?
